@@ -1,0 +1,50 @@
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Adzan Indonesia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Jadwal Adzan Seluruh Indonesia</h1>
+        <div class="search-container">
+            <label for="searchCity">Pilih Kota:</label>
+            <input type="text" id="searchCity" placeholder="Cari Kota..." onkeyup="filterCities()">
+            <select id="city"></select>
+        </div>
+        <div class="date-container">
+            <div class="date-box">
+                <label for="startDate">Dari Tanggal:</label>
+                <input type="text" id="startDateFormatted" readonly>
+                <input type="date" id="startDate" onchange="updateFormattedDate('startDate')">
+            </div>
+            <div class="date-box">
+                <label for="endDate">Sampai Tanggal:</label>
+                <input type="text" id="endDateFormatted" readonly>
+                <input type="date" id="endDate" onchange="updateFormattedDate('endDate')">
+            </div>
+        </div>
+        <div class="button-container">
+            <button onclick="fetchSchedule()">Tampilkan</button>
+            <button onclick="downloadCSV()" id="downloadCSV" style="display:none;">Download CSV</button>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Subuh</th>
+                        <th>Dzuhur</th>
+                        <th>Ashar</th>
+                        <th>Maghrib</th>
+                        <th>Isya</th>
+                    </tr>
+                </thead>
+                <tbody id="schedule"></tbody>
+            </table>
+        </div>
+    </div>
+    <script src="logic.js"></script>
+</body>
+</html>

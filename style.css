@@ -1,0 +1,120 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #1c56ae, #00f1febf);
+    text-align: center;
+    padding: 20px;
+    color: rgb(255, 255, 255);
+    margin: 0;
+}
+
+.container {
+    max-width: 90%;
+    width: 100%;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-style: italic;
+    color: #070357;
+}
+
+.search-container, .date-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    color:  rgb(0, 25, 89);
+    font-weight: 700;
+}
+
+
+.date-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+    gap: 1rem;
+    color: rgb(0, 25, 89);
+    font-weight: 700;
+}
+
+input, select, button {
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    transition: 0.3s;
+    width: 100%;
+}
+
+button {
+    background: #005bea;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+button:hover {
+    background: #0c4c5e;
+    transform: scale(1.01);
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    color: rgb(2, 16, 46);
+    font-weight: 500;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+th, td {
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+th {
+    background: #005bea;
+}
+
+@media (max-width: 768px) {
+    .search-container, .date-container {
+        flex-direction: column;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+    table {
+        font-size: 14px;
+        width: 10vh;
+    }
+    button {
+        font-size: 14px;
+    }
+}
