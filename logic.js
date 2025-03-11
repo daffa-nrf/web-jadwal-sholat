@@ -100,11 +100,28 @@ async function fetchSchedule() {
     document.getElementById('downloadCSV').style.display = 'inline-block';
 }
 
+// 🔥 Perubahan: Menambahkan fungsi untuk mengubah format tanggal ke "YYYY-M-D"
+function formatDateCSV(dateStr) {
+    const parts = dateStr.split(' ');
+    if (parts.length === 3) {
+        const year = parts[0];
+        const monthNames = {
+            "Januari": 1, "Februari": 2, "Maret": 3, "April": 4, "Mei": 5, "Juni": 6,
+            "Juli": 7, "Agustus": 8, "September": 9, "Oktober": 10, "November": 11, "Desember": 12
+        };
+        const month = monthNames[parts[1]];
+        const day = parts[2];
+        return `${year}-${month}-${day}`;
+    }
+    return dateStr;
+}
+
 function downloadCSV() {
-    let csvContent = "Tanggal;Subuh;Dzuhur;Ashar;Maghrib;Isya\n"; // Gunakan ; sebagai pemisah
-    
+    let csvContent = "Tanggal;Subuh;Dzuhur;Ashar;Maghrib;Isya\n";
+
     scheduleData.forEach(row => {
-        csvContent += '"' + row.join('";"') + '"\n'; // Bungkus setiap nilai dengan kutip
+        row[0] = formatDateCSV(row[0]); // 🔥 Ubah format tanggal sebelum disimpan ke CSV
+        csvContent += '"' + row.join('";"') + '"\n';
     });
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
