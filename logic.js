@@ -31,13 +31,13 @@ function filterCities() {
 
 function formatDate(dateStr) {
     const date = new Date(dateStr);
-    if (isNaN(date.getTime())) return ''; 
-    
+    if (isNaN(date.getTime())) return '';
+
     const day = date.getDate();
     const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear();
-    
+
     return `${year} ${month} ${day}`;
 }
 
@@ -52,7 +52,10 @@ function updateFormattedDate(inputId) {
 }
 
 async function fetchSchedule() {
-    const cityId = document.getElementById('city').value;
+    const citySelect = document.getElementById('city');
+    const cityId = citySelect.value;
+    const cityName = citySelect.options[citySelect.selectedIndex].text; // Ambil nama kota yang dipilih
+
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
     if (!cityId || !startDate || !endDate) {
@@ -75,7 +78,7 @@ async function fetchSchedule() {
             const data = await response.json();
             if (data.status && data.data.jadwal) {
                 const schedule = data.data.jadwal;
-                const formattedDate = formatDate(`${year}-${month}-${day}`);
+                const formattedDate = `${year}-${parseInt(month)}-${parseInt(day)}`;
                 const row = `
                     <tr>
                         <td>${formattedDate}</td>
@@ -90,33 +93,25 @@ async function fetchSchedule() {
                 
                 scheduleData.push([formattedDate, schedule.subuh || '-', schedule.dzuhur || '-', schedule.ashar || '-', schedule.maghrib || '-', schedule.isya || '-']);
             } else {
-                tbody.innerHTML += `<tr><td colspan="6">Data tidak tersedia untuk ${formatDate(`${year}-${month}-${day}`)}</td></tr>`;
+                tbody.innerHTML += `<tr><td colspan="6">Data tidak tersedia untuk ${year}-${month}-${day}</td></tr>`;
             }
         } catch (error) {
-            tbody.innerHTML += `<tr><td colspan="6">Gagal mengambil data untuk ${formatDate(`${year}-${month}-${day}`)}</td></tr>`;
+            tbody.innerHTML += `<tr><td colspan="6">Gagal mengambil data untuk ${year}-${month}-${day}</td></tr>`;
         }
     }
 
+    // Set nama kota di tombol download
+    document.getElementById('downloadCSV').setAttribute("data-city", cityName);
     document.getElementById('downloadCSV').style.display = 'inline-block';
 }
 
-// 🔥 Perubahan: Menambahkan fungsi untuk mengubah format tanggal ke "YYYY-M-D"
+// 🔥 Perubahan: Fungsi untuk mengubah format tanggal ke "YYYY-M-D"
 function formatDateCSV(dateStr) {
-    const parts = dateStr.split(' ');
-    if (parts.length === 3) {
-        const year = parts[0];
-        const monthNames = {
-            "Januari": 1, "Februari": 2, "Maret": 3, "April": 4, "Mei": 5, "Juni": 6,
-            "Juli": 7, "Agustus": 8, "September": 9, "Oktober": 10, "November": 11, "Desember": 12
-        };
-        const month = monthNames[parts[1]];
-        const day = parts[2];
-        return `${year}-${month}-${day}`;
-    }
-    return dateStr;
+    return dateStr; // Sudah dalam format "YYYY-M-D"
 }
 
 function downloadCSV() {
+    const cityName = document.getElementById('downloadCSV').getAttribute("data-city"); // 🔥 Ambil nama kota dari tombol
     let csvContent = "Tanggal;Subuh;Dzuhur;Ashar;Maghrib;Isya\n";
 
     scheduleData.forEach(row => {
@@ -129,7 +124,7 @@ function downloadCSV() {
     if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
-        link.setAttribute("download", "jadwal_adzan.csv");
+        link.setAttribute("download", `Jadwal_Adzan_${cityName.replace(/\s+/g, '_')}.csv`); // 🔥 Nama file pakai nama kota
         link.style.visibility = "hidden";
         document.body.appendChild(link);
         link.click();
