@@ -111,12 +111,12 @@ function formatDateCSV(dateStr) {
 }
 
 function downloadCSV() {
-    const cityName = document.getElementById('downloadCSV').getAttribute("data-city"); // 🔥 Ambil nama kota dari tombol
-    let csvContent = "Tanggal;Subuh;Dzuhur;Ashar;Maghrib;Isya\n";
+    const cityName = document.getElementById('downloadCSV').getAttribute("data-city"); // Ambil nama kota dari tombol
+    let csvContent = "Tanggal,Subuh,Dzuhur,Ashar,Maghrib,Isya\n"; // Gunakan koma sebagai pemisah
 
     scheduleData.forEach(row => {
-        row[0] = formatDateCSV(row[0]); // 🔥 Ubah format tanggal sebelum disimpan ke CSV
-        csvContent += '"' + row.join('";"') + '"\n';
+        row[0] = row[0].replace(/-/g, "/"); // Format datetime yang lebih fleksibel untuk Orange
+        csvContent += row.join(",") + "\n"; // Gunakan koma sebagai pemisah
     });
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -124,7 +124,7 @@ function downloadCSV() {
     if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
-        link.setAttribute("download", `Jadwal_Adzan_${cityName.replace(/\s+/g, '_')}.csv`); // 🔥 Nama file pakai nama kota
+        link.setAttribute("download", `Jadwal_Adzan_${cityName.replace(/\s+/g, '_')}.csv`); 
         link.style.visibility = "hidden";
         document.body.appendChild(link);
         link.click();
